@@ -139,7 +139,7 @@ const myObject3 = {
   myNumber: 1,
 };
 const material = new THREE.MeshStandardMaterial({ color: parameters.color });
-console.log(material);
+// console.log(material);
 material.metalness = 0.9988;
 
 material.roughness = -3.881;
@@ -196,7 +196,16 @@ gui.add(myObject1, "myFunction").name("Rustediron");
 
 gui.add(myObject2, "myFunction").name("OrnateBrass");
 gui.add(myObject3, "myFunction").name("FancyBrass");
-
+gui
+  .add(myObject, "myBoolean")
+  .name("Add floor")
+  .onChange((value) => {
+    if (value) {
+      scene.add(floor);
+    } else {
+      scene.remove(floor);
+    }
+  });
 material.shininess = 1000;
 // material.specular = new THREE.Color(0x1188ff);
 
@@ -207,7 +216,7 @@ material.shininess = 1000;
  * Floor
  */
 const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(10, 10),
+  new THREE.BoxGeometry(10, 10, 10),
   new THREE.MeshStandardMaterial({
     color: "#444444",
     metalness: 0,
@@ -216,8 +225,8 @@ const floor = new THREE.Mesh(
 );
 floor.receiveShadow = true;
 floor.rotation.x = -Math.PI * 0.5;
-floor.position.y = -1;
-// scene.add(floor);
+floor.position.y = -10;
+scene.add(floor);
 
 /**
  * Lights
@@ -291,7 +300,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.set(2, 2, 8);
+camera.position.set(2, 2, 15);
 scene.add(camera);
 
 // Controls
