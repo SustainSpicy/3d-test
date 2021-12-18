@@ -141,34 +141,57 @@ const myObject3 = {
 const material = new THREE.MeshStandardMaterial({ color: parameters.color });
 console.log(material);
 material.metalness = 0.9988;
-// material.metalness = 0;
+
 material.roughness = -3.881;
 material.side = DoubleSide;
 material.envMap = environmentMapTexture;
 material.map = rustedironBasecolor;
 material.aoMap = "";
+
 material.roughnessMap = rustedironRoughness;
 // material.metalnessMap = rustedironMetal;
 material.normalMap = rustedironNormal;
 
 // material.matcap = anotherNormalTexture;
-// material.alphaMap = ornateBrassAlbedoNormal;
 
-gui.add(material, "metalness").min(0.9877).max(1).step(0.0001);
-gui.add(material, "roughness").min(-5).max(0.3604).step(0.0001);
-
+gui
+  .add(material.normalScale, "y")
+  .min(-100)
+  .max(100)
+  .step(0.01)
+  .name("normalScaley");
+gui
+  .add(material.normalScale, "x")
+  .min(-100)
+  .max(100)
+  .step(0.01)
+  .name("normalScalex");
 gui.add(material, "wireframe");
 gui
   .add(myObject, "myBoolean")
   .name("Environmental map")
   .onChange((value) => {
-    console.log(value);
     if (value) {
       material.envMap = environmentMapTexture;
     } else {
       material.envMap = "";
     }
   });
+gui
+  .add(myObject, "myBoolean")
+  .name("Transparent")
+  .onChange((value) => {
+    if (value) {
+      material.alphaMap = ornateBrassAlbedoNormal;
+      material.transparent = true;
+    } else {
+      material.alphaMap = "";
+      material.transparent = false;
+    }
+  });
+gui.add(material, "metalness").min(0.9877).max(1).step(0.0001);
+gui.add(material, "roughness").min(-5).max(0.3604).step(0.0001);
+
 gui.add(myObject1, "myFunction").name("Rustediron");
 
 gui.add(myObject2, "myFunction").name("OrnateBrass");
@@ -228,7 +251,7 @@ gltfLoader.load("/models/setup01.glb", async (gltf) => {
 
   //   new THREE.BufferAttribute(logoMesh.geometry.attributes.uv.array, 10);
 
-  //   logoMesh.position.x = 1;
+  logoMesh.position.x = 1;
 
   //   gltf.scene.scale.set(0.025, 0.025, 0.025);
   //   gltf.scene.rotation.y += 20;
@@ -298,7 +321,8 @@ const tick = () => {
   const deltaTime = elapsedTime - previousTime;
   previousTime = elapsedTime;
   //   logoMesh.rotation.y = 0.1 * elapsedTime;
-  //   camera.rotation.y = elapsedTime * Math.PI * 2;
+  //   logoMesh.rotation.y = (elapsedTime * Math.PI) / 142;
+  camera.lookAt(logoMesh);
   // Update controls
   controls.update();
 
