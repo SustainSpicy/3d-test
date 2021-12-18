@@ -147,7 +147,6 @@ material.side = DoubleSide;
 material.envMap = environmentMapTexture;
 material.map = rustedironBasecolor;
 material.aoMap = "";
-
 material.roughnessMap = rustedironRoughness;
 // material.metalnessMap = rustedironMetal;
 material.normalMap = rustedironNormal;
@@ -167,6 +166,7 @@ gui
   .step(0.01)
   .name("normalScalex");
 gui.add(material, "wireframe");
+
 gui
   .add(myObject, "myBoolean")
   .name("Environmental map")
@@ -182,7 +182,7 @@ gui
   .name("Transparent")
   .onChange((value) => {
     if (value) {
-      material.alphaMap = ornateBrassAlbedoNormal;
+      material.alphaMap = ornateBrassAlbedo;
       material.transparent = true;
     } else {
       material.alphaMap = "";
@@ -246,12 +246,12 @@ const gltfLoader = new GLTFLoader();
 let logoMesh = new THREE.Object3D();
 gltfLoader.load("/models/setup01.glb", async (gltf) => {
   logoMesh = gltf.scene.children[6];
-  console.log(gltf);
+  //   console.log(gltf);
   logoMesh.getObjectByName("test_03").material = material;
 
   //   new THREE.BufferAttribute(logoMesh.geometry.attributes.uv.array, 10);
 
-  logoMesh.position.x = 1;
+  //   logoMesh.position.x = 1;
 
   //   gltf.scene.scale.set(0.025, 0.025, 0.025);
   //   gltf.scene.rotation.y += 20;
